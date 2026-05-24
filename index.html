@@ -173,14 +173,14 @@
             ["手柄动画 01", "产品动画", "Video", "images/yx_1.png", "", "游戏手柄产品动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-1.mp4"],
             ["手柄动画 02", "产品动画", "Video", "images/yx_2.png", "", "游戏手柄多角度动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-2.mp4"],
             ["扩展坞", "产品动画", "Video", "images/tzw.png", "", "扩展坞产品动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E6%89%A9%E5%B1%95%E5%9D%9E.mp4"],
-            ["硅胶表带", "产品动画", "Video", "images/bd-2.png", "", "硅胶表带动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%A1%85%E8%83%B6%E8%A1%A8%E5%B8%A6.mp4"],
+            ["硅胶表带", "产品动画", "Video", "images/bd-2.png", "", "硅胶表带动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/% Bruja 73"],
             ["米兰表带", "产品动画", "Video", "images/bd-1.png", "", "金属表带动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%B1%B3%E5%85%B0%E8%A1%A8%E5%B8%A6.mp4"],
-            ["吸顶灯", "产品动画", "Video", "images/xdd-1.png", "", "灯光效果与安装展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%90%B8%E9%A1%B6%E7%81%AF.mp4"],
+            ["吸顶灯", "产品动画", "Video", "images/xdd-1.png", "", "灯光效果与安装展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%00%B8%E9%A1%B6%E7%81%AF.mp4"],
             ["平板保护套", "产品动画", "Video", "images/pb-1.png", "", "平板保护套功能演示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%B9%B3%E6%9D%BF%E4%BF%9D%E6%8A%A4%E5%A5%97%20.mp4"],
             ["长条灯", "产品动画", "Video", "images/ctd-1.png", "", "线性灯光产品动画", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4"],
             ["翻页笔", "产品动画", "Video", "images/f.png", "", "办公产品功能演示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%BF%BB%E9%A1%B5%E7%AC%94.mp4"],
-            ["鼠标 A+详情页", "电商详情", "A+ Design", "images/sb-tu.png", "images/sb-tu.png", "办公鼠标详情页视觉设计", ""],
-            ["游戏手柄 A+详情页", "电商详情", "A+ Design", "images/xy-tu.png", "images/gamepad-a-plus.jpg", "游戏手柄电商视觉设计", ""]
+            ["鼠标 A+详情页", "电商详情", "A+ Design", "images/sb-tu.png", "images/mouse-a-plus.png", "办公鼠标详情页视觉设计", ""],
+            ["游戏手柄 A+详情页", "电商详情", "A+ Design", "images/xy-tu.png", "images/gamepad-a-plus.png", "游戏手柄电商视觉设计", ""]
         ];
 
         const ANALYTICS_KEY = 'portfolio_analytics';
@@ -200,8 +200,9 @@
         }
 
         const grid = document.getElementById("grid"), videoModal = document.getElementById("videoModal"), modalVideo = document.getElementById("modalVideo"), modalTitle = document.getElementById("modalTitle"), imageModal = document.getElementById("imageModal"), modalImage = document.getElementById("modalImage");
-        function openVideo(src, title) { videoModal.classList.add("active"); modalVideo.src = src; modalTitle.textContent = title; modalVideo.play().catch(()=>{}); recordClick(title); }
+        function openVideo(src, title) { videoModal.src = src; videoModal.classList.add("active"); modalVideo.src = src; modalTitle.textContent = title; modalVideo.play().catch(()=>{}); recordClick(title); }
         function openImage(src, title) { imageModal.classList.add("active"); modalImage.src = src; recordClick(title); }
+        
         document.getElementById("closeVideoModal").onclick = () => { videoModal.classList.remove("active"); modalVideo.src=""; };
         document.getElementById("closeImageModal").onclick = () => { imageModal.classList.remove("active"); modalImage.src=""; };
 
