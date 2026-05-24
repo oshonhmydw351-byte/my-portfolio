@@ -984,9 +984,6 @@
             ["平板保护套", "产品动画", "Video", "images/pb-1.png", "", "平板保护套功能演示",
                 "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%B9%B3%E6%9D%BF%E4%BF%9D%E6%8A%A4%E5%A5%97%20.mp4"
             ],
-            ["电池底座", "产品动画", "Video", "images/dcdz.png", "", "外置电池底座结构演示",
-                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%94%B5%E6%B1%A0%E5%BA%95%E5%BA%A7.mp4"
-            ],
             ["长条灯", "产品动画", "Video", "images/ctd-1.png", "", "线性灯光产品动画",
                 "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4"
             ],
@@ -998,7 +995,7 @@
                 ""
             ],
             ["游戏手柄 A+详情页", "电商详情", "A+ Design", "images/xy-tu.png",
-                "images/xy-tu.png", "游戏手柄电商视觉设计",
+                "images/gamepad-a-plus.jpg", "游戏手柄电商视觉设计",
                 ""
             ]
         ];
@@ -1299,7 +1296,7 @@
             if (glow) { glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; }
         });
 
-        // ============ 磁吸/触摸优化 ============
+        // ============ 移动端触摸优化 ============
         document.querySelectorAll(".card").forEach(card => {
             card.addEventListener("touchstart", function() { this.style.transform = "scale(0.98)"; }, { passive: true });
             card.addEventListener("touchend", function() { this.style.transform = ""; }, { passive: true });
