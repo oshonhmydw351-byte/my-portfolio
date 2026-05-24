@@ -5,109 +5,836 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品集网站</title>
     <style>
-        * { box-sizing: border-box }
-        html { scroll-behavior: smooth }
+        * {
+            box-sizing: border-box
+        }
+        html {
+            scroll-behavior: smooth
+        }
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
-            background: #05070c; color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #05070c;
+            color: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .bg1, .bg2, .bg3 { position: fixed; pointer-events: none; z-index: 0 }
-        .bg1 { top: -18%; right: -12%; width: 620px; height: 620px; border-radius: 999px; background: radial-gradient(circle, rgba(0, 122, 255, .25), transparent 60%); filter: blur(120px) }
-        .bg2 { bottom: 8%; left: -12%; width: 560px; height: 560px; border-radius: 999px; background: radial-gradient(circle, rgba(0, 255, 200, .15), transparent 60%); filter: blur(120px) }
-        .bg3 { inset: 0; background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .1), transparent 32%) }
-        .cursor-glow { position: fixed; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(90, 160, 255, .18), transparent 65%); pointer-events: none; z-index: 0; transform: translate(-50%, -50%); filter: blur(14px) }
-        header, main { position: relative; z-index: 1 }
-        .container { max-width: 1320px; margin: 0 auto; padding: 0 28px }
-        header { padding: 30px 0 10px; }
-        .nav { display: flex; justify-content: space-between; align-items: center }
-        .links { display: flex; gap: 32px }
-        .links a { color: rgba(255, 255, 255, .62); text-decoration: none; font-size: 14px; transition: .25s }
-        .links a:hover { color: #fff }
-        .hero { padding: 40px 0 110px; display: grid; grid-template-columns: minmax(320px, .82fr) minmax(560px, 1.18fr); gap: 54px; align-items: center }
-        .pill { display: inline-flex; gap: 8px; align-items: center; padding: 9px 16px; border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .045); border-radius: 999px; color: rgba(255, 255, 255, .72); font-size: 14px; margin-bottom: 28px; backdrop-filter: blur(18px) }
-        .live-counter-tag { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: linear-gradient(135deg, rgba(165, 243, 252, 0.12), rgba(0, 122, 255, 0.03)); border: 1px solid rgba(165, 243, 252, 0.2); border-radius: 12px; color: #a5f3fc; font-size: 13px; font-weight: 600; backdrop-filter: blur(10px); }
-        .live-counter-tag .pulse-dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse-glow 2s infinite; }
-        @keyframes pulse-glow { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
-        h1 { font-size: clamp(54px, 6vw, 96px); line-height: 1; margin: 0; font-weight: 700; letter-spacing: -.06em }
-        .hero p { font-size: 18px; line-height: 1.8; color: rgba(255, 255, 255, .58); max-width: 580px; margin: 26px 0 0 }
-        .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px }
-        .btn { padding: 14px 22px; border-radius: 14px; text-decoration: none; font-weight: 600; transition: .25s }
-        .btn.primary { background: #fff; color: #000 }
-        .btn.secondary { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); color: #fff; backdrop-filter: blur(18px) }
-        .feature { aspect-ratio: 16/9; border-radius: 34px; background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .08); padding: 14px; backdrop-filter: blur(30px); box-shadow: 0 42px 130px rgba(0, 0, 0, .65); cursor: pointer; transition: .3s }
-        .feature-inner { height: 100%; border-radius: 26px; overflow: hidden; background: #000; position: relative }
-        .feature-inner .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease, transform 1.2s ease; transform: scale(1.04) }
-        .feature-inner .hero-slide.active { opacity: 1; transform: scale(1) }
-        .grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .86), rgba(0, 0, 0, .26), transparent); z-index: 2 }
-        .feature-text { position: absolute; left: 34px; right: 34px; bottom: 34px; z-index: 5; pointer-events: none }
-        .eyebrow { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .14); color: #a5f3fc; font-size: 12px; margin-bottom: 14px }
-        .feature-text h2 { font-size: clamp(26px, 3vw, 44px); margin: 0 0 10px; font-weight: 600 }
-        .feature-text .feature-hint { color: rgba(255, 255, 255, .68); display: flex; align-items: center; gap: 8px }
-        .feature-play-icon { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: #000; align-items: center; justify-content: center; font-size: 12px; font-weight: 900 }
-        .progress { position: absolute; left: 34px; right: 34px; bottom: 20px; height: 3px; background: rgba(255, 255, 255, .18); border-radius: 999px; overflow: hidden; z-index: 6 }
-        .progress span { display: block; height: 100%; width: 0; background: #fff; animation: progressBar 5s linear infinite }
-        .dots { position: absolute; right: 34px; bottom: 34px; display: flex; gap: 8px; z-index: 7 }
-        .dot { width: 8px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .35); transition: .3s; cursor: pointer }
-        .dot.active { width: 28px; background: #fff }
-        @keyframes progressBar { from { width: 0 } to { width: 100% } }
-        .services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 96px }
-        .service { padding: 24px; border-radius: 26px; background: rgba(255, 255, 255, .035); border: 1px solid rgba(255, 255, 255, .07); transition: .3s; backdrop-filter: blur(18px) }
-        .service:hover { background: rgba(255, 255, 255, .075); transform: translateY(-5px) }
-        .icon { font-size: 28px; color: #a5f3fc; margin-bottom: 18px }
-        .service h3 { margin: 0 0 10px; font-weight: 600 }
-        .service p { margin: 0; color: rgba(255, 255, 255, .5); font-size: 14px; line-height: 1.7 }
-        .section-head { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-bottom: 34px }
-        .label { color: #a5f3fc; font-size: 14px; margin-bottom: 12px }
-        .section-head h2 { font-size: clamp(42px, 5vw, 58px); margin: 0; font-weight: 700; letter-spacing: -.045em }
-        .filters { display: flex; gap: 8px; flex-wrap: wrap }
-        .filter { border: 1px solid rgba(255, 255, 255, .08); background: rgba(255, 255, 255, .04); color: rgba(255, 255, 255, .65); padding: 10px 16px; border-radius: 999px; cursor: pointer; transition: .25s }
-        .filter.active { background: #fff; color: #000 }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-bottom: 110px }
-        .card { border-radius: 28px; overflow: hidden; background: rgba(255, 255, 255, .035); border: 1px solid rgba(255, 255, 255, .07); transition: .3s; cursor: pointer }
-        .card:hover { border-color: rgba(255, 255, 255, .18); box-shadow: 0 30px 80px rgba(0, 0, 0, .5) }
-        .thumb { aspect-ratio: 16/11; background: #000; position: relative; overflow: hidden }
-        .thumb img, .thumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: .5s }
-        .card:hover .thumb img { transform: scale(1.08); opacity: .12 }
-        .card:hover .thumb video { opacity: 1 }
-        .thumb:after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .72), transparent); z-index: 2 }
-        .tag { position: absolute; top: 16px; left: 16px; padding: 7px 12px; border-radius: 999px; background: rgba(255, 255, 255, .08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, .1); font-size: 12px; z-index: 3 }
-        .play, .zoom { position: absolute; right: 16px; bottom: 16px; padding: 10px 14px; border-radius: 999px; background: #fff; color: #000; z-index: 3; font-size: 13px; font-weight: 700 }
-        .card-body { padding: 22px }
-        .type { font-size: 12px; color: #a5f3fc; margin-bottom: 8px }
-        .card h3 { margin: 0; font-size: 20px; display: flex; justify-content: space-between; font-weight: 600 }
-        .card p { color: rgba(255, 255, 255, .5); font-size: 14px; line-height: 1.7; margin: 12px 0 0 }
-        .contact { margin-bottom: 64px; border-radius: 38px; background: linear-gradient(135deg, #fff, #dfe9ff); color: #000; padding: 42px 50px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center }
-        .contact h2 { font-size: clamp(34px, 5vw, 56px); margin: 0; font-weight: 700 }
-        .contact p { color: rgba(0, 0, 0, .55); margin-bottom: 20px; }
-        .contact-form-wrapper { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 460px; }
-        .netlify-input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(0, 0, 0, 0.12); background: rgba(0, 0, 0, 0.03); font-size: 14px; color: #000; outline: none }
-        .netlify-submit { padding: 12px 20px; background: #000; color: #fff; border: none; border-radius: 10px; font-weight: 600; cursor: pointer }
-        .contact-info-links { display: flex; gap: 16px; margin-top: 14px; font-size: 13px; }
-        .contact-info-links a { color: rgba(0, 0, 0, 0.6); text-decoration: none }
-        .video-modal, .image-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, .92); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 32px }
-        .video-modal.active, .image-modal.active { display: flex }
-        .modal-content { width: min(96vw, 1920px); aspect-ratio: 1920/1280; background: #000; border-radius: 22px; overflow: hidden; position: relative; border: 1px solid rgba(255, 255, 255, .1) }
-        .modal-content video { width: 100%; height: 100%; object-fit: contain }
-        .image-content { max-width: 94vw; max-height: 92vh; overflow: auto; border-radius: 20px; background: #111; border: 1px solid rgba(255, 255, 255, .14) }
-        .image-content img { display: block; max-width: 100%; height: auto }
-        .close-modal { position: absolute; top: 22px; right: 22px; z-index: 10001; width: 46px; height: 46px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .1); color: #fff; font-size: 28px; cursor: pointer }
-        .modal-title { position: absolute; left: 24px; bottom: 24px; z-index: 10000; padding: 10px 14px; border-radius: 999px; background: rgba(0, 0, 0, .45); font-size: 14px }
-        .reveal { opacity: 0; transform: translateY(34px); transition: opacity .8s ease, transform .8s ease }
-        .reveal.show { opacity: 1; transform: translateY(0) }
-        @media(max-width:1080px) { .hero { grid-template-columns: 1fr; gap: 40px } .services, .grid { grid-template-columns: repeat(2, 1fr) } .section-head { grid-template-columns: 1fr } .contact { grid-template-columns: 1fr } }
-        @media(max-width:640px) { .container { padding: 0 18px } .nav { flex-direction: column-reverse; gap: 16px } h1 { font-size: clamp(48px, 18vw, 68px) } .services, .grid { grid-template-columns: 1fr } .dots { display: none } }
+        .bg1,
+        .bg2,
+        .bg3 {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0
+        }
+        .bg1 {
+            top: -18%;
+            right: -12%;
+            width: 620px;
+            height: 620px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(0, 122, 255, .25), transparent 60%);
+            filter: blur(120px)
+        }
+        .bg2 {
+            bottom: 8%;
+            left: -12%;
+            width: 560px;
+            height: 560px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(0, 255, 200, .15), transparent 60%);
+            filter: blur(120px)
+        }
+        .bg3 {
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .1), transparent 32%)
+        }
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(90, 160, 255, .18), transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            filter: blur(14px)
+        }
+        header,
+        main {
+            position: relative;
+            z-index: 1
+        }
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 28px
+        }
+        header {
+            padding: 30px 0 10px; /* 调整间距，配合计数标签 */
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between; /* 左右分流：计数在左，导航在右 */
+            align-items: center
+        }
+        .links {
+            display: flex;
+            gap: 32px
+        }
+        .links a {
+            color: rgba(255, 255, 255, .62);
+            text-decoration: none;
+            font-size: 14px;
+            transition: .25s
+        }
+        .links a:hover {
+            color: #fff
+        }
+        .hero {
+            padding: 40px 0 110px; /* 稍微缩减顶部 padding，使对齐视觉更紧凑 */
+            display: grid;
+            grid-template-columns: minmax(320px, .82fr) minmax(560px, 1.18fr);
+            gap: 54px;
+            align-items: center
+        }
+        .pill {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            padding: 9px 16px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .045);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, .72);
+            font-size: 14px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(18px)
+        }
+        /* 优化后的总访问人数标签样式：直接在左上角与作品文本完美左对齐 */
+        .live-counter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(165, 243, 252, 0.12), rgba(0, 122, 255, 0.03));
+            border: 1px solid rgba(165, 243, 252, 0.2);
+            border-radius: 12px;
+            color: #a5f3fc;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            user-select: none;
+        }
+        .live-counter-tag .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        h1 {
+            font-size: clamp(54px, 6vw, 96px);
+            line-height: 1;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -.06em
+        }
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, .58);
+            max-width: 580px;
+            margin: 26px 0 0
+        }
+        .actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 34px
+        }
+        .btn {
+            padding: 14px 22px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: .25s
+        }
+        .btn.primary {
+            background: #fff;
+            color: #000
+        }
+        .btn.secondary {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: #fff;
+            backdrop-filter: blur(18px)
+        }
+        .btn:hover {
+            transform: scale(1.05)
+        }
+        .feature {
+            aspect-ratio: 16/9;
+            border-radius: 34px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            padding: 14px;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 42px 130px rgba(0, 0, 0, .65);
+            cursor: pointer;
+            transition: border-color .3s, box-shadow .3s
+        }
+        .feature:hover {
+            border-color: rgba(255, 255, 255, .2);
+            box-shadow: 0 42px 150px rgba(0, 0, 0, .75)
+        }
+        .feature-inner {
+            height: 100%;
+            border-radius: 26px;
+            overflow: hidden;
+            background: #000;
+            position: relative
+        }
+        .feature-inner .hero-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1.2s ease;
+            transform: scale(1.04)
+        }
+        .feature-inner .hero-slide.active {
+            opacity: 1;
+            transform: scale(1)
+        }
+        .grad {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .86), rgba(0, 0, 0, .26), transparent), linear-gradient(to right, rgba(0, 0, 0, .62), transparent 60%);
+            z-index: 2;
+            pointer-events: none
+        }
+        .feature-text {
+            position: absolute;
+            left: 34px;
+            right: 34px;
+            bottom: 34px;
+            z-index: 5;
+            pointer-events: none
+        }
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .14);
+            color: #a5f3fc;
+            font-size: 12px;
+            margin-bottom: 14px;
+            backdrop-filter: blur(14px)
+        }
+        .feature-text h2 {
+            font-size: clamp(26px, 3vw, 44px);
+            margin: 0 0 10px;
+            letter-spacing: -.04em;
+            font-weight: 600
+        }
+        .feature-text .feature-hint {
+            color: rgba(255, 255, 255, .68);
+            max-width: 680px;
+            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+        .feature-play-icon {
+            display: inline-flex;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #fff;
+            color: #000;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            flex-shrink: 0
+        }
+        .progress {
+            position: absolute;
+            left: 34px;
+            right: 34px;
+            bottom: 20px;
+            height: 3px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            overflow: hidden;
+            z-index: 6;
+            pointer-events: none
+        }
+        .progress span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: #fff;
+            border-radius: 999px;
+            animation: progressBar 5s linear infinite
+        }
+        .dots {
+            position: absolute;
+            right: 34px;
+            bottom: 34px;
+            display: flex;
+            gap: 8px;
+            z-index: 7
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, .35);
+            transition: .3s;
+            cursor: pointer;
+            pointer-events: auto
+        }
+        .dot.active {
+            width: 28px;
+            background: #fff
+        }
+        @keyframes progressBar {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 96px
+        }
+        .service {
+            padding: 24px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, .035);
+            border: 1px solid rgba(255, 255, 255, .07);
+            transition: .3s;
+            backdrop-filter: blur(18px)
+        }
+        .service:hover {
+            background: rgba(255, 255, 255, .075);
+            transform: translateY(-5px)
+        }
+        .icon {
+            font-size: 28px;
+            color: #a5f3fc;
+            margin-bottom: 18px
+        }
+        .service h3 {
+            margin: 0 0 10px;
+            font-weight: 600
+        }
+        .service p {
+            margin: 0;
+            color: rgba(255, 255, 255, .5);
+            font-size: 14px;
+            line-height: 1.7
+        }
+        .section-head {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: end;
+            margin-bottom: 34px
+        }
+        .label {
+            color: #a5f3fc;
+            font-size: 14px;
+            margin-bottom: 12px
+        }
+        .section-head h2 {
+            font-size: clamp(42px, 5vw, 58px);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -.045em
+        }
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end
+        }
+        .filter {
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .04);
+            color: rgba(255, 255, 255, .65);
+            padding: 10px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: .25s;
+            backdrop-filter: blur(18px)
+        }
+        .filter.active {
+            background: #fff;
+            color: #000
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+            margin-bottom: 110px;
+            perspective: 1200px
+        }
+        .card {
+            border-radius: 28px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .035);
+            border: 1px solid rgba(255, 255, 255, .07);
+            transition: .3s;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            will-change: transform;
+            backdrop-filter: blur(10px)
+        }
+        .card:hover {
+            border-color: rgba(255, 255, 255, .18);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .5)
+        }
+        .thumb {
+            aspect-ratio: 16/11;
+            background: #000;
+            position: relative;
+            overflow: hidden
+        }
+        .thumb img,
+        .thumb video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .5s
+        }
+        .thumb img {
+            opacity: 1;
+            filter: brightness(.96) contrast(1.05)
+        }
+        .thumb video {
+            opacity: 0;
+            pointer-events: none
+        }
+        .card:hover .thumb img {
+            transform: scale(1.08);
+            opacity: .12
+        }
+        .card:hover .thumb video {
+            opacity: 1
+        }
+        .thumb:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .72), transparent 62%);
+            z-index: 2;
+            pointer-events: none
+        }
+        .tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            font-size: 12px;
+            z-index: 3
+        }
+        .play {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: #fff;
+            color: #000;
+            display: grid;
+            place-items: center;
+            z-index: 3;
+            font-weight: 900;
+            pointer-events: none
+        }
+        .zoom {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: #fff;
+            color: #000;
+            z-index: 3;
+            font-size: 13px;
+            font-weight: 700;
+            pointer-events: none
+        }
+        .card-body {
+            padding: 22px
+        }
+        .type {
+            font-size: 12px;
+            color: #a5f3fc;
+            margin-bottom: 8px
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-weight: 600
+        }
+        .card p {
+            color: rgba(255, 255, 255, .5);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 12px 0 0
+        }
+        .contact {
+            margin-bottom: 64px;
+            border-radius: 38px;
+            background: linear-gradient(135deg, #fff, #dfe9ff);
+            color: #000;
+            padding: 42px 50px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: center;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, .45)
+        }
+        .contact h2 {
+            font-size: clamp(34px, 5vw, 56px);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -.045em
+        }
+        .contact p {
+            color: rgba(0, 0, 0, .55);
+            margin-bottom: 20px;
+        }
+        .contact-form-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            max-width: 460px;
+        }
+        .netlify-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            background: rgba(0, 0, 0, 0.03);
+            font-size: 14px;
+            color: #000;
+            outline: none;
+            transition: 0.25s;
+        }
+        .netlify-input:focus {
+            border-color: #000;
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .netlify-submit {
+            padding: 12px 20px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+        .netlify-submit:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+        .contact-info-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 14px;
+            font-size: 13px;
+        }
+        .contact-info-links a {
+            color: rgba(0, 0, 0, 0.6);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .contact-info-links a:hover {
+            color: #000;
+        }
+        .video-modal,
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .92);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 32px
+        }
+        .video-modal.active,
+        .image-modal.active {
+            display: flex
+        }
+        .modal-content {
+            width: min(96vw, 1920px);
+            aspect-ratio: 1920/1280;
+            background: #000;
+            border-radius: 22px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, .1);
+            box-shadow: 0 40px 140px rgba(0, 0, 0, .8)
+        }
+        .modal-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000
+        }
+        .image-content {
+            max-width: 94vw;
+            max-height: 92vh;
+            overflow: auto;
+            border-radius: 20px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, .14);
+            box-shadow: 0 30px 120px rgba(0, 0, 0, .7)
+        }
+        .image-content img {
+            display: block;
+            max-width: 100%;
+            height: auto
+        }
+        .close-modal {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            z-index: 10001;
+            width: 46px;
+            height: 46px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            backdrop-filter: blur(20px)
+        }
+        .modal-title {
+            position: absolute;
+            left: 24px;
+            bottom: 24px;
+            z-index: 10000;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, .45);
+            border: 1px solid rgba(255, 255, 255, .14);
+            backdrop-filter: blur(10px);
+            font-size: 14px
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity .8s ease, transform .8s ease
+        }
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+        @media(max-width:1080px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 54px 0 88px
+            }
+            .hero p {
+                max-width: 760px
+            }
+            .services {
+                grid-template-columns: repeat(2, 1fr)
+            }
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+            .section-head {
+                grid-template-columns: 1fr
+            }
+            .filters {
+                justify-content: flex-start
+            }
+            .contact {
+                grid-template-columns: 1fr
+            }
+            .contact-form-wrapper {
+                max-width: 100%;
+            }
+        }
+        @media(max-width:640px) {
+            .container {
+                padding: 0 18px
+            }
+            header {
+                padding: 18px 0
+            }
+            .nav {
+                flex-direction: column-reverse; /* 移动端下标签放下面，导航放上面，防止拥挤 */
+                gap: 16px;
+                align-items: flex-start;
+            }
+            .links {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .hero {
+                padding: 32px 0 72px;
+                gap: 30px
+            }
+            .pill {
+                font-size: 12px;
+                margin-bottom: 20px;
+                padding: 8px 13px
+            }
+            h1 {
+                font-size: clamp(48px, 18vw, 68px);
+                letter-spacing: -.07em
+            }
+            .hero p {
+                font-size: 15px;
+                line-height: 1.75;
+                margin-top: 20px
+            }
+            .actions {
+                margin-top: 26px
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+                padding: 14px 18px
+            }
+            .feature {
+                border-radius: 24px;
+                padding: 9px;
+                aspect-ratio: 16/10
+            }
+            .feature-inner {
+                border-radius: 18px
+            }
+            .feature-text {
+                left: 18px;
+                right: 18px;
+                bottom: 24px
+            }
+            .eyebrow {
+                font-size: 10px;
+                padding: 6px 10px;
+                margin-bottom: 10px
+            }
+            .feature-text h2 {
+                font-size: 24px
+            }
+            .feature-text .feature-hint {
+                font-size: 13px;
+                line-height: 1.55
+            }
+            .feature-play-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 10px
+            }
+            .progress {
+                left: 18px;
+                right: 18px;
+                bottom: 14px
+            }
+            .dots {
+                display: none
+            }
+            .services {
+                grid-template-columns: 1fr;
+                margin-bottom: 70px
+            }
+            .service {
+                padding: 22px;
+                border-radius: 22px
+            }
+            .section-head h2 {
+                font-size: 40px
+            }
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 78px
+            }
+            .thumb {
+                aspect-ratio: 16/10
+            }
+            .card {
+                border-radius: 24px
+            }
+            .card-body {
+                padding: 20px
+            }
+            .contact {
+                padding: 30px 24px;
+                border-radius: 28px;
+                margin-bottom: 44px
+            }
+            .video-modal,
+            .image-modal {
+                padding: 12px
+            }
+            .modal-content {
+                width: 100vw;
+                border-radius: 14px
+            }
+            .close-modal {
+                top: 14px;
+                right: 14px;
+                width: 42px;
+                height: 42px
+            }
+            .cursor-glow {
+                display: none
+            }
+        }
     </style>
 </head>
 <body>
     <div class="cursor-glow"></div>
-    <div class="bg1"></div><div class="bg2"></div><div class="bg3"></div>
+    <div class="bg1"></div>
+    <div class="bg2"></div>
+    <div class="bg3"></div>
+
     <header>
         <div class="container nav">
-            <div class="live-counter-tag"><span class="pulse-dot"></span><span>全网总访问人数：<span id="globalPageViews">⚡ Loading...</span></span></div>
+            <div class="live-counter-tag">
+                <span class="pulse-dot"></span>
+                <span>全网总访问人数：<span id="globalPageViews">⚡ Loading...</span></span>
+            </div>
+            
             <div class="links"><a href="#work">作品</a><a href="#service">服务</a><a href="#contact">联系</a></div>
         </div>
     </header>
+
     <main>
         <section class="container hero">
             <div>
@@ -116,116 +843,465 @@
                 <p>专注电商产品动画、3D视觉展示、A+详情页与科技感海报。</p>
                 <div class="actions"><a class="btn primary" href="#work">查看作品 ↗</a><a class="btn secondary" href="#contact">联系合作</a></div>
             </div>
+
             <div class="feature" id="heroFeature">
                 <div class="feature-inner">
-                    <img class="hero-slide active" src="images/rj-1.png" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%B4%E6%88%B4%E8%80%B3%E6%9C%BA.mp4" data-title="耳机产品动画">
-                    <img class="hero-slide" src="images/ctd-1.png" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4" data-title="长条灯产品动画">
-                    <img class="hero-slide" src="images/bd-2.png" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%A1%85%E8%83%B6%E8%A1%A8%E5%B8%A6.mp4" data-title="硅胶表带动画">
-                    <img class="hero-slide" src="images/tzw.png" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E6%89%A9%E5%B1%95%E5%9D%9E.mp4" data-title="扩展坞产品动画">
+                    <img class="hero-slide active" src="images/rj-1.png" alt="耳机产品动画封面" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%B4%E6%88%B4%E8%80%B3%E6%9C%BA.mp4" data-title="耳机产品动画">
+                    <img class="hero-slide" src="images/ctd-1.png" alt="长条灯产品动画封面" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4" data-title="长条灯产品动画">
+                    <img class="hero-slide" src="images/bd-2.png" alt="硅胶表带动画封面" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%A1%85%E8%83%B6%E8%A1%A8%E5%B8%A6.mp4" data-title="硅胶表带动画">
+                    <img class="hero-slide" src="images/tzw.png" alt="扩展坞产品动画封面" data-video="https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E6%89%A9%E5%B1%95%E5%9D%9E.mp4" data-title="扩展坞产品动画">
                     <div class="grad"></div>
-                    <div class="feature-text"><span class="eyebrow">FEATURED PRODUCT MOTION</span><h2>产品动画主视觉展示</h2><div class="feature-hint"><span class="feature-play-icon">▶</span> 点击封面播放视频</div></div>
-                    <div class="dots"><span class="dot active" data-index="0"></span><span class="dot" data-index="1"></span><span class="dot" data-index="2"></span><span class="dot" data-index="3"></span></div>
+                    <div class="feature-text">
+                        <span class="eyebrow">FEATURED PRODUCT MOTION</span>
+                        <h2>产品动画主视觉展示</h2>
+                        <div class="feature-hint">
+                            <span class="feature-play-icon">▶</span> 点击封面播放视频
+                        </div>
+                    </div>
+                    <div class="dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                        <span class="dot" data-index="2"></span>
+                        <span class="dot" data-index="3"></span>
+                    </div>
                     <div class="progress"><span></span></div>
                 </div>
             </div>
         </section>
+
         <section id="service" class="container services">
-            <div class="service"><div class="icon">▧</div><h3>电商详情</h3><p>A+图、主图、卖点页、场景页</p></div>
-            <div class="service"><div class="icon">▣</div><h3>产品动画</h3><p>MP4视频展示、结构演示、灯效动效</p></div>
-            <div class="service"><div class="icon">▤</div><h3>视觉合成</h3><p>科技感、家居场景、商业海报</p></div>
-            <div class="service"><div class="icon">▸</div><h3>作品集网站</h3><p>适配pc端 手机端 / 自建网站</p></div>
+            <div class="service">
+                <div class="icon">▧</div>
+                <h3>电商详情</h3>
+                <p>A+图、主图、卖点页、场景页</p>
+            </div>
+            <div class="service">
+                <div class="icon">▣</div>
+                <h3>产品动画</h3>
+                <p>MP4视频展示、结构演示、灯效动效</p>
+            </div>
+            <div class="service">
+                <div class="icon">▤</div>
+                <h3>视觉合成</h3>
+                <p>科技感、家居场景、商业海报</p>
+            </div>
+            <div class="service">
+                <div class="icon">▸</div>
+                <h3>作品集网站</h3>
+                <p>适配pc端 手机端 / 自建网站</p>
+            </div>
         </section>
+
         <section id="work" class="container">
             <div class="section-head">
                 <div>
                     <div class="label">SELECTED WORKS</div>
                     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
                         <h2>精选作品</h2>
-                        <div id="statsToggle" style="font-size: 13px; background: rgba(165, 243, 252, 0.1); border: 1px solid rgba(165, 243, 252, 0.2); color: #a5f3fc; padding: 6px 14px; border-radius: 999px; cursor: pointer;">📊 详细交互行为 (点击展开)</div>
+                        <div id="statsToggle" style="font-size: 13px; background: rgba(165, 243, 252, 0.1); border: 1px solid rgba(165, 243, 252, 0.2); color: #a5f3fc; padding: 6px 14px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(10px); transition: 0.3s; user-select: none;">
+                            📊 详细交互行为 (点击展开)
+                        </div>
                     </div>
-                    <div id="statsPanel" style="display: none; width: 100%; max-width: 430px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; margin-top: 14px;">
-                        <div style="font-weight: 600; margin-bottom: 12px;">📈 访客交互排行</div><div id="statsList"></div>
+                    <div id="statsPanel" style="display: none; width: 100%; max-width: 430px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; margin-top: 14px; backdrop-filter: blur(20px); font-size: 14px; color: rgba(255,255,255,0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                        <div style="font-weight: 600; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                            <span>📈 访客交互排行</span>
+                            <span style="font-size: 11px; color: rgba(255,255,255,0.3);">[本地行为分析]</span>
+                        </div>
+                        <div id="statsList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 12px 0;">
+                        <div id="statsSummary" style="font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.6;"></div>
                     </div>
                 </div>
-                <div class="filters"><button class="filter active" data-filter="全部">全部</button><button class="filter" data-filter="产品动画">产品动画</button><button class="filter" data-filter="电商详情">电商详情</button></div>
+                <div class="filters">
+                    <button class="filter active" data-filter="全部">全部</button>
+                    <button class="filter" data-filter="产品动画">产品动画</button>
+                    <button class="filter" data-filter="电商详情">电商详情</button>
+                </div>
             </div>
             <div class="grid" id="grid"></div>
         </section>
+
         <section id="contact" class="container contact">
-            <div><h2>需要合作？</h2><p>欢迎随时留言或通过以下方式取得联系。</p><div class="contact-info-links"><a href="mailto:2149085971@qq.com">✉ 2149085971@qq.com</a><a href="#">☏ 微信：asdz7394300</a></div></div>
+            <div>
+                <h2>需要合作？</h2>
+                <p>项目咨询、产品动画、电商详情页设计，欢迎随时留言或通过以下方式取得联系。</p>
+                <div class="contact-info-links">
+                    <a href="mailto:2149085971@qq.com">✉ 2149085971@qq.com</a>
+                    <a href="#">☏ 微信：asdz7394300</a>
+                </div>
+            </div>
             <div class="contact-form-wrapper">
                 <form name="portfolio-contact" method="POST" data-netlify="true" style="display: flex; flex-direction: column; gap: 10px;">
                     <input type="hidden" name="form-name" value="portfolio-contact" />
-                    <input type="text" name="name" placeholder="您的称呼" required class="netlify-input">
-                    <input type="text" name="contact" placeholder="联系方式" required class="netlify-input">
+                    <input type="text" name="name" placeholder="您的称呼 / 公司名称" required class="netlify-input">
+                    <input type="text" name="contact" placeholder="联系方式 (微信/手机/邮箱)" required class="netlify-input">
                     <textarea name="message" placeholder="简述您的合作需求..." rows="3" required class="netlify-input" style="resize: none; font-family: inherit;"></textarea>
                     <button type="submit" class="netlify-submit">发送合作意向 ↗</button>
                 </form>
             </div>
         </section>
     </main>
-    <div class="video-modal" id="videoModal"><button class="close-modal" id="closeVideoModal">×</button><div class="modal-content"><video id="modalVideo" controls autoplay playsinline></video><div class="modal-title" id="modalTitle">Product Animation</div></div></div>
-    <div class="image-modal" id="imageModal"><button class="close-modal" id="closeImageModal">×</button><div class="image-content"><img id="modalImage" alt="详情大图"></div></div>
+
+    <div class="video-modal" id="videoModal">
+        <button class="close-modal" id="closeVideoModal">×</button>
+        <div class="modal-content">
+            <video id="modalVideo" controls autoplay playsinline></video>
+            <div class="modal-title" id="modalTitle">Product Animation</div>
+        </div>
+    </div>
+    <div class="image-modal" id="imageModal">
+        <button class="close-modal" id="closeImageModal">×</button>
+        <div class="image-content">
+            <img id="modalImage" alt="详情大图">
+        </div>
+    </div>
+
     <script>
         const projects = [
-            ["耳机产品动画", "产品动画", "Video", "images/rj-1.png", "", "耳机结构与开盖展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%B4%E6%88%B4%E8%80%B3%E6%9C%BA.mp4"],
-            ["PSP主机底座", "产品动画", "Video", "images/ps5-dz.png", "", "主机底座灯效与结构演示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/psp%E4%B8%BB%E6%9C%BA%E5%BA%95%E5%BA%A7.mp4"],
-            ["手柄动画 01", "产品动画", "Video", "images/yx_1.png", "", "游戏手柄产品动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-1.mp4"],
-            ["手柄动画 02", "产品动画", "Video", "images/yx_2.png", "", "游戏手柄多角度动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-2.mp4"],
-            ["扩展坞", "产品动画", "Video", "images/tzw.png", "", "扩展坞产品动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E6%89%A9%E5%B1%95%E5%9D%9E.mp4"],
-            ["硅胶表带", "产品动画", "Video", "images/bd-2.png", "", "硅胶表带动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/% Bruja 73"],
-            ["米兰表带", "产品动画", "Video", "images/bd-1.png", "", "金属表带动画展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%B1%B3%E5%85%B0%E8%A1%A8%E5%B8%A6.mp4"],
-            ["吸顶灯", "产品动画", "Video", "images/xdd-1.png", "", "灯光效果与安装展示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%00%B8%E9%A1%B6%E7%81%AF.mp4"],
-            ["平板保护套", "产品动画", "Video", "images/pb-1.png", "", "平板保护套功能演示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%B9%B3%E6%9D%BF%E4%BF%9D%E6%8A%A4%E5%A5%97%20.mp4"],
-            ["长条灯", "产品动画", "Video", "images/ctd-1.png", "", "线性灯光产品动画", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4"],
-            ["翻页笔", "产品动画", "Video", "images/f.png", "", "办公产品功能演示", "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%BF%BB%E9%A1%B5%E7%AC%94.mp4"],
-            ["鼠标 A+详情页", "电商详情", "A+ Design", "images/sb-tu.png", "images/mouse-a-plus.png", "办公鼠标详情页视觉设计", ""],
-            ["游戏手柄 A+详情页", "电商详情", "A+ Design", "images/xy-tu.png", "images/gamepad-a-plus.png", "游戏手柄电商视觉设计", ""]
+            ["耳机产品动画", "产品动画", "Video", "images/rj-1.png", "", "耳机结构、灯效与开盖展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%B4%E6%88%B4%E8%80%B3%E6%9C%BA.mp4"
+            ],
+            ["PSP主机底座", "产品动画", "Video", "images/ps5-dz.png", "", "主机底座灯效与结构演示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/psp%E4%B8%BB%E6%9C%BA%E5%BA%95%E5%BA%A7.mp4"
+            ],
+            ["手柄动画 01", "产品动画", "Video", "images/yx_1.png", "", "游戏手柄产品动画展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-1.mp4"
+            ],
+            ["手柄动画 02", "产品动画", "Video", "images/yx_2.png", "", "游戏手柄多角度动画展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%A4%A7%E6%89%8B%E6%9F%84-2.mp4"
+            ],
+            ["扩展坞", "产品动画", "Video", "images/tzw.png", "", "扩展坞产品动画展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E6%89%A9%E5%B1%95%E5%9D%9E.mp4"
+            ],
+            ["硅胶表带", "产品动画", "Video", "images/bd-2.png", "", "硅胶表带动画展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%A1%85%E8%83%B6%E8%A1%A8%E5%B8%A6.mp4"
+            ],
+            ["米兰表带", "产品动画", "Video", "images/bd-1.png", "", "金属表带动画展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%B1%B3%E5%85%B0%E8%A1%A8%E5%B8%A6.mp4"
+            ],
+            ["吸顶灯", "产品动画", "Video", "images/xdd-1.png", "", "灯光效果与安装展示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%90%B8%E9%A1%B6%E7%81%AF.mp4"
+            ],
+            ["平板保护套", "产品动画", "Video", "images/pb-1.png", "", "动画时间周期短",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E5%B9%B3%E6%9D%BF%E4%BF%9D%E6%8A%A4%E5%A5%97%20.mp4"
+            ],
+            ["长条灯", "产品动画", "Video", "images/ctd-1.png", "", "线性灯光产品动画",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E9%95%BF%E6%9D%A1%E7%81%AF.mp4"
+            ],
+            ["翻页笔", "产品动画", "Video", "images/f.png", "", "办公产品功能演示",
+                "https://pub-96313c6c3de34340ab176a562be296b5.r2.dev/video/%E7%BF%BB%E9%A1%B5%E7%AC%94.mp4"
+            ],
+            ["鼠标 A+详情页", "电商详情","A+ Design",  "sb-tu.png",
+                "mouse-a-plus.png", "办公鼠标详情页视觉设计",
+                ""
+            ],
+            ["游戏手柄 A+详情页", "电商详情", "A+ Design", "xy-tu.png",
+                "gamepad-a-plus.png", "游戏手柄电商视觉设计",
+                ""
+            ]
         ];
 
+        // ============ 访客点击与行为系统 ============
         const ANALYTICS_KEY = 'portfolio_analytics';
+
         function fetchGlobalViews() {
-            fetch(`https://api.counterapi.dev/v1/netlify_motion_portfolio_2026/main_v2_pageview/up`)
-                .then(res => res.json()).then(data => { if(data?.value) document.getElementById('globalPageViews').textContent = Number(data.value).toLocaleString() + " 人"; })
-                .catch(() => { document.getElementById('globalPageViews').textContent = "1,458 人"; });
-        }
-        function getAnalyticsData() { try { const raw = localStorage.getItem(ANALYTICS_KEY); if (raw) return JSON.parse(raw); } catch (e) {} return { totalClicks: 0, clickLog: [] }; }
-        function saveAnalyticsData(data) { try { localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data)); } catch (e) {} }
-        function recordClick(name) { const data = getAnalyticsData(); data.totalClicks += 1; data.clickLog.push({ project: name }); saveAnalyticsData(data); updateStatsUI(); }
-        function updateStatsUI() {
-            const list = document.getElementById('statsList'); if (!list) return;
-            const data = getAnalyticsData(); const counts = {}; data.clickLog.forEach(e => { if(e.project) counts[e.project] = (counts[e.project] || 0) + 1; });
-            const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
-            list.innerHTML = sorted.slice(0, 3).map(([n, c], i) => `<div>${i+1}. ${n} (${c}次)</div>`).join('') || '暂无交互记录';
+            const namespace = "netlify_motion_portfolio_2026"; 
+            const key = "main_v2_pageview";
+            
+            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.value) {
+                        document.getElementById('globalPageViews').textContent = Number(data.value).toLocaleString() + " 人";
+                    }
+                })
+                .catch(() => {
+                    const localData = getAnalyticsData();
+                    document.getElementById('globalPageViews').textContent = (1420 + localData.totalPageViews) + " 人";
+                });
         }
 
-        const grid = document.getElementById("grid"), videoModal = document.getElementById("videoModal"), modalVideo = document.getElementById("modalVideo"), modalTitle = document.getElementById("modalTitle"), imageModal = document.getElementById("imageModal"), modalImage = document.getElementById("modalImage");
-        function openVideo(src, title) { videoModal.src = src; videoModal.classList.add("active"); modalVideo.src = src; modalTitle.textContent = title; modalVideo.play().catch(()=>{}); recordClick(title); }
-        function openImage(src, title) { imageModal.classList.add("active"); modalImage.src = src; recordClick(title); }
-        
-        document.getElementById("closeVideoModal").onclick = () => { videoModal.classList.remove("active"); modalVideo.src=""; };
-        document.getElementById("closeImageModal").onclick = () => { imageModal.classList.remove("active"); modalImage.src=""; };
+        function getAnalyticsData() {
+            try {
+                const raw = localStorage.getItem(ANALYTICS_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) { /* ignore */ }
+            return { totalPageViews: 0, totalClicks: 0, firstVisit: null, lastVisit: null, clickLog: [], heroClicks: 0 };
+        }
 
+        function saveAnalyticsData(data) {
+            try { localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data)); } catch (e) {}
+        }
+
+        function recordPageView() {
+            const data = getAnalyticsData();
+            const now = new Date().toISOString();
+            data.totalPageViews += 1;
+            data.lastVisit = now;
+            if (!data.firstVisit) data.firstVisit = now;
+            data.clickLog.push({ timestamp: now, type: 'page_view', page: window.location.pathname });
+            if (data.clickLog.length > 500) data.clickLog = data.clickLog.slice(-500);
+            saveAnalyticsData(data);
+            fetchGlobalViews(); 
+        }
+
+        function recordClick(projectName, category, source) {
+            const data = getAnalyticsData();
+            const now = new Date().toISOString();
+            data.totalClicks += 1;
+            data.lastVisit = now;
+            if (!data.firstVisit) data.firstVisit = now;
+            if (source === 'hero') data.heroClicks += 1;
+            data.clickLog.push({ timestamp: now, type: 'click', project: projectName, category: category, source: source || 'card' });
+            if (data.clickLog.length > 500) data.clickLog = data.clickLog.slice(-500);
+            saveAnalyticsData(data);
+            
+            if (document.getElementById('statsPanel')?.style.display === 'block') {
+                updateWebStatsUI();
+            }
+        }
+
+        function getClickStats() {
+            const data = getAnalyticsData();
+            const projectCounts = {};
+            data.clickLog.forEach(entry => {
+                if (entry.type === 'click' && entry.project) {
+                    projectCounts[entry.project] = (projectCounts[entry.project] || 0) + 1;
+                }
+            });
+            const sorted = Object.entries(projectCounts).sort((a, b) => b[1] - a[1]);
+            return { projectCounts, sorted, totalClicks: data.totalClicks, totalPageViews: data.totalPageViews, heroClicks: data.heroClicks };
+        }
+
+        recordPageView();
+
+        function updateWebStatsUI() {
+            const statsList = document.getElementById('statsList');
+            const statsSummary = document.getElementById('statsSummary');
+            if (!statsList || !statsSummary) return;
+
+            const stats = getClickStats();
+            
+            if (stats.sorted.length === 0) {
+                statsList.innerHTML = `<div style="color: rgba(255,255,255,0.3); font-size: 13px;">暂无本地点击记录。</div>`;
+            } else {
+                statsList.innerHTML = stats.sorted.slice(0, 5).map(([name, count], i) => {
+                    let medal = i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : `${i + 1}. `;
+                    return `<div style="display: flex; justify-content: space-between; font-size: 13px; align-items: center;">
+                        <span style="color: rgba(255,255,255,0.85); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 300px;">${medal}${name}</span>
+                        <span style="color: #a5f3fc; font-weight: 600;">${count} 次</span>
+                    </div>`;
+                }).join('');
+            }
+
+            statsSummary.innerHTML = `
+                🎬 顶端轮播主视觉点击：${stats.heroClicks} 次<br>
+                🖱️ 当前设备卡片交互数：${stats.totalClicks} 次
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('statsToggle');
+            const panel = document.getElementById('statsPanel');
+
+            if (toggleBtn && panel) {
+                toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (panel.style.display === 'none') {
+                        updateWebStatsUI(); 
+                        panel.style.display = 'block';
+                        toggleBtn.textContent = '📊 详细交互行为 (点击收起)';
+                        toggleBtn.style.background = 'rgba(165, 243, 252, 0.2)';
+                    } else {
+                        panel.style.display = 'none';
+                        toggleBtn.textContent = '📊 详细交互行为 (点击展开)';
+                        toggleBtn.style.background = 'rgba(165, 243, 252, 0.1)';
+                    }
+                });
+            }
+        });
+
+        // ============ DOM元素 ============
+        const grid = document.getElementById("grid");
+        const videoModal = document.getElementById("videoModal");
+        const modalVideo = document.getElementById("modalVideo");
+        const modalTitle = document.getElementById("modalTitle");
+        const imageModal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+
+        // ============ 视频模态窗口 ============
+        function openVideo(src, title, projectName, category) {
+            if (!src) return;
+            videoModal.classList.add("active");
+            modalVideo.src = src;
+            modalTitle.textContent = title;
+            modalVideo.play().catch(() => {});
+            if (projectName) recordClick(projectName, category || '产品动画', 'modal');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideo() {
+            videoModal.classList.remove("active");
+            modalVideo.pause();
+            modalVideo.removeAttribute("src");
+            modalVideo.load();
+            document.body.style.overflow = '';
+        }
+
+        function openImage(src, projectName, category) {
+            if (!src) return;
+            imageModal.classList.add("active");
+            modalImage.src = src;
+            if (projectName) recordClick(projectName, category || '电商详情', 'image');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImage() {
+            imageModal.classList.remove("active");
+            modalImage.removeAttribute("src");
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById("closeVideoModal").onclick = closeVideo;
+        document.getElementById("closeImageModal").onclick = closeImage;
+        videoModal.addEventListener("click", e => { if (e.target === videoModal) closeVideo(); });
+        imageModal.addEventListener("click", e => { if (e.target === imageModal) closeImage(); });
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") { closeVideo(); closeImage(); }
+        });
+
+        // ============ 渲染作品卡片 ============
         function render(filter = "全部") {
             grid.innerHTML = "";
             projects.filter(p => filter === "全部" || p[1] === filter).forEach(p => {
-                const card = document.createElement("article"); card.className = "card";
+                const card = document.createElement("article");
+                card.className = "card";
                 const isVideo = !!p[6];
-                card.innerHTML = `<div class="thumb"><img src="${p[3]}">${isVideo ? `<video src="${p[6]}" poster="${p[3]}" muted loop playsinline preload="metadata"></video>` : ''}<div class="tag">${p[2]}</div><div class="${isVideo?'play':'zoom'}">${isVideo?'▶':'查看大图'}</div></div><div class="card-body"><div class="type">${p[1]}</div><h3>${p[0]} <span>↗</span></h3><p>${p[5]}</p></div>`;
-                card.onclick = () => { isVideo ? openVideo(p[6], p[0]) : openImage(p[4], p[0]); };
+                const actionIcon = isVideo ? '<div class="play">▶</div>' : '<div class="zoom">查看大图</div>';
+                const videoHtml = isVideo ?
+                    `<video src="${p[6]}" poster="${p[3]}" muted loop playsinline preload="metadata"></video>` :
+                    "";
+                card.innerHTML = `
+              <div class="thumb">
+                <img src="${p[3]}" alt="${p[0]}">
+                ${videoHtml}
+                <div class="tag">${p[2]}</div>
+                ${actionIcon}
+              </div>
+              <div class="card-body">
+                <div class="type">${p[1]}</div>
+                <h3>${p[0]} <span>↗</span></h3>
+                <p>${p[5]}</p>
+              </div>
+            `;
+                const video = card.querySelector("video");
+                if (video) {
+                    card.addEventListener("click", () => { openVideo(p[6], p[0], p[0], p[1]); });
+                } else {
+                    card.addEventListener("click", () => { openImage(p[4], p[0], p[1]); });
+                }
                 grid.appendChild(card);
+            });
+            addReveal();
+            addCardTilt();
+        }
+        render();
+
+        // ============ 筛选按钮 ============
+        document.querySelectorAll(".filter").forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                render(btn.dataset.filter);
+            };
+        });
+
+        // ============ Hero封面轮播 ============
+        const heroSlides = document.querySelectorAll(".hero-slide");
+        const dots = document.querySelectorAll(".dot");
+        const heroFeature = document.getElementById("heroFeature");
+        let currentHero = 0;
+        const totalSlides = heroSlides.length;
+        let heroInterval;
+
+        function goToSlide(index) {
+            heroSlides[currentHero].classList.remove("active");
+            dots[currentHero].classList.remove("active");
+            currentHero = ((index % totalSlides) + totalSlides) % totalSlides;
+            heroSlides[currentHero].classList.add("active");
+            dots[currentHero].classList.add("active");
+        }
+
+        function resetHeroInterval() {
+            clearInterval(heroInterval);
+            const progressSpan = document.querySelector('.progress span');
+            if (progressSpan) {
+                progressSpan.style.animation = 'none';
+                progressSpan.offsetHeight;
+                progressSpan.style.animation = 'progressBar 5s linear infinite';
+            }
+            heroInterval = setInterval(() => { goToSlide(currentHero + 1); }, 5000);
+        }
+
+        resetHeroInterval();
+
+        dots.forEach(dot => {
+            dot.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const index = parseInt(dot.dataset.index);
+                if (index !== currentHero) {
+                    goToSlide(index);
+                    resetHeroInterval();
+                }
+            });
+        });
+
+        heroFeature.addEventListener("click", () => {
+            const activeSlide = heroSlides[currentHero];
+            const videoSrc = activeSlide.dataset.video;
+            const videoTitle = activeSlide.dataset.title || '产品动画展示';
+            if (videoSrc) { openVideo(videoSrc, videoTitle, videoTitle, '产品动画'); }
+        });
+
+        // ============ Reveal动画 ============
+        function addReveal() {
+            document.querySelectorAll(".service,.card,.contact,.feature").forEach(el => {
+                if (!el.classList.contains("reveal")) el.classList.add("reveal");
+            });
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("show"); });
+            }, { threshold: .12 });
+            document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+        }
+
+        // ============ Card Tilt效果 ============
+        function addCardTilt() {
+            if (window.innerWidth < 900) return;
+            document.querySelectorAll(".card").forEach(card => {
+                card.onmousemove = e => {
+                    const r = card.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    const rx = (y / r.height - .5) * -8;
+                    const ry = (x / r.width - .5) * 8;
+                    card.style.transform = `translateY(-8px) scale(1.01) rotateX(${rx}deg) rotateY(${ry}deg)`;
+                };
+                card.style.transformStyle = "preserve-3d";
+                card.onmouseleave = () => { card.style.transform = ""; };
             });
         }
 
-        document.querySelectorAll(".filter").forEach(btn => btn.onclick = () => { document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); render(btn.dataset.filter); });
-        document.getElementById('statsToggle').onclick = () => { const p = document.getElementById('statsPanel'); p.style.display = p.style.display==='none'?'block':'none'; if(p.style.display==='block') updateStatsUI(); };
+        // ============ 光标光晕 ============
+        const glow = document.querySelector(".cursor-glow");
+        document.addEventListener("mousemove", e => {
+            if (glow) { glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; }
+        });
 
-        const heroSlides = document.querySelectorAll(".hero-slide"), dots = document.querySelectorAll(".dot"); let currentHero = 0;
-        setInterval(() => { heroSlides[currentHero].classList.remove("active"); dots[currentHero].classList.remove("active"); currentHero = (currentHero + 1) % heroSlides.length; heroSlides[currentHero].classList.add("active"); dots[currentHero].classList.add("active"); }, 5000);
-        document.getElementById("heroFeature").onclick = () => { const s = heroSlides[currentHero]; if(s.dataset.video) openVideo(s.dataset.video, s.dataset.title); };
-
-        const glow = document.querySelector(".cursor-glow"); document.addEventListener("mousemove", e => { if(glow) { glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; } });
-        fetchGlobalViews(); render();
+        // ============ 移动端触摸优化 ============
+        document.querySelectorAll(".card").forEach(card => {
+            card.addEventListener("touchstart", function() { this.style.transform = "scale(0.98)"; }, { passive: true });
+            card.addEventListener("touchend", function() { this.style.transform = ""; }, { passive: true });
+        });
     </script>
 </body>
 </html>
